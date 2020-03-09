@@ -9,6 +9,23 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <boost/spirit/include/karma.hpp>
+
+template <typename T>
+inline bool generate(std::string& str, T const& value)
+{
+    std::back_insert_iterator<std::string> sink(str);
+    return boost::spirit::karma::generate(sink, value);
+}
+
+template <typename T>
+inline bool generate(char* ptr, T const& value)
+{
+    bool ret = boost::spirit::karma::generate(ptr, value);
+    *ptr = '\0';
+    return ret;
+}
+
 DebugCtrl::DebugCtrl() {
 	// TODO Auto-generated constructor stub
 	mLogcount = 0;
@@ -19,6 +36,8 @@ DebugCtrl::~DebugCtrl() {
 }
 
 void DebugCtrl::AddOutputString(const MotorInfo &pMotorInfo) {
+	namespace karma = boost::spirit::karma;
+
 	int milIu = (int)( pMotorInfo.mIuvw.at(0) * 1000 );
 	int milIv = (int)( pMotorInfo.mIuvw.at(1) * 1000 );
 	int milIw = (int)( pMotorInfo.mIuvw.at(2) * 1000 );
@@ -66,6 +85,7 @@ void DebugCtrl::AddOutputString(const MotorInfo &pMotorInfo) {
 	int milObsOmega = pMotorInfo.mEstOmega_Observer * 1000;
 
 	char outputStr[64]={0};//100文字までとりあえず静的確保
+	std::string OutStr;
 	//general
 	//sprintf(outputStr,"%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n" ,mlogcount, milIgTarget, milVg, milVd, milIg, milId, DegArg, DegAxiErr, milEstOmega, EstTheta);//みやゆうさんご希望のデバッグ
 
@@ -87,13 +107,32 @@ void DebugCtrl::AddOutputString(const MotorInfo &pMotorInfo) {
 //						+std::to_string(milVd)+","
 //						+std::to_string(milIg)+","
 //						+std::to_string(milId)+"\n";
-	sprintf(outputStr,"%d,%d,%d,%d,%d,%d\n" ,mLogcount, milVg, milVd, milIg, milId, DegArg);
+
+
+//	generate(OutStr, mLogcount);
+//	generate(OutStr, milVg);
+//	generate(OutStr, milVd);
+//	generate(OutStr, milIg);
+//	generate(OutStr, milId);
+//	generate(OutStr, DegArg);
+//	karma::generate(outputStr, mLogcount);
+//	karma::generate(outputStr, milVg);
+//	karma::generate(outputStr, milVd);
+//	karma::generate(outputStr, milIg);
+//	karma::generate(outputStr, milId);
+//	karma::generate(outputStr, DegArg);
+//	*outputStr = '\0';
+
+	//sprintf(outputStr,"%d,%d,%d,%d,%d,%d\n" ,mLogcount, milVg, milVd, milIg, milId, DegArg);
+
 	//strcat(mOutputChar, outputStr);
 
 }
 
 
 void DebugCtrl::RTTOutput(const MotorInfo &pMotorInfo, const UIStatus &pUIStatus) {
+
+	namespace karma = boost::spirit::karma;
 
 	int milIu = (int)( pMotorInfo.mIuvw.at(0) * 1000 );
 	int milIv = (int)( pMotorInfo.mIuvw.at(1) * 1000 );
@@ -161,7 +200,17 @@ void DebugCtrl::RTTOutput(const MotorInfo &pMotorInfo, const UIStatus &pUIStatus
 //						+std::to_string(milIg)+","
 //						+std::to_string(milId)+"\n";
 
-	sprintf(outputStr,"%d,%d,%d,%d,%d,%d\n" ,mLogcount, milVg, milVd, milIg, milId, DegArg);
+
+
+//	karma::generate(outputStr, mLogcount);
+//	karma::generate(outputStr, milVg);
+//	karma::generate(outputStr, milVd);
+//	karma::generate(outputStr, milIg);
+//	karma::generate(outputStr, milId);
+//	karma::generate(outputStr, DegArg);
+//	*outputStr = '\0';
+
+	//sprintf(outputStr,"%d,%d,%d,%d,%d,%d\n" ,mLogcount, milVg, milVd, milIg, milId, DegArg);
 
 	//measure hetelo
 	//sprintf(outputStr,"%d,%d,%d,%d,%d,%d\n" ,mLogcount, milCosDemod, milSinDemod, milIdch, milIqch, DegArg);
