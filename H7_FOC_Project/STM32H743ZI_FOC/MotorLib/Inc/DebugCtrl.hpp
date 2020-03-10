@@ -10,7 +10,7 @@
 
 #include "MotorInfo.hpp"
 #include "UIStatus.hpp"
-#include "math.h"
+//#include "math.h"
 #include "SEGGER_RTT.h"
 
 //#include <string>
@@ -18,7 +18,7 @@
 class DebugCtrl {
 private:
 	int mLogcount;
-//	std::string mOutputStr;
+	std::string mOutputStr;
 	char mOutputChar[128] = {};
 
 public:
